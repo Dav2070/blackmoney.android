@@ -55,7 +55,7 @@ android {
     namespace "de.butler_kassensysteme.twa"
     defaultConfig {
         applicationId "de.butler_kassensysteme.twa"
-        minSdkVersion 21
+        minSdkVersion 30
         targetSdkVersion 36
         versionCode 1
         versionName "1"
