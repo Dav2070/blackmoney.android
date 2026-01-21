@@ -1,18 +1,15 @@
-package de.butler_kassensysteme.twa;
+package de.butler_kassensysteme.twa.Message;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PostMessageObject {
-    String type;
-    @Nullable String data;
+public class Message {
+    public String type;
 
-    PostMessageObject(String type, @Nullable String data) {
+    public Message(String type) {
         this.type = type;
-        this.data = data;
     }
 
     @NonNull
@@ -22,7 +19,6 @@ public class PostMessageObject {
 
         try {
             jsonObject.put("type", type);
-            jsonObject.put("data", data);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

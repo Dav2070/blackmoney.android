@@ -5,12 +5,14 @@ import com.stripe.stripeterminal.external.callable.ConnectionTokenProvider;
 
 import java.util.concurrent.CompletableFuture;
 
+import de.butler_kassensysteme.twa.Message.Message;
+
 public class TokenProvider implements ConnectionTokenProvider {
     @Override
     public void fetchConnectionToken(ConnectionTokenCallback callback) {
         CompletableFuture<String> future = new CompletableFuture<>();
 
-        LauncherActivity.postMessage(new PostMessageObject("createStripeConnectionToken", null), future);
+        LauncherActivity.postMessage(new Message("createStripeConnectionToken"), future);
         String result = future.join();
 
         callback.onSuccess(result);

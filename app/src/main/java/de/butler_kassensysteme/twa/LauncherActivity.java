@@ -26,8 +26,6 @@ import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
 import androidx.browser.customtabs.CustomTabsServiceConnection;
@@ -47,23 +45,23 @@ import com.stripe.stripeterminal.external.models.ConnectionConfiguration;
 import com.stripe.stripeterminal.external.models.DiscoveryConfiguration;
 import com.stripe.stripeterminal.external.models.PaymentIntent;
 import com.stripe.stripeterminal.external.models.PaymentIntentParameters;
-import com.stripe.stripeterminal.external.models.PaymentMethodType;
 import com.stripe.stripeterminal.external.models.Reader;
 import com.stripe.stripeterminal.external.models.TerminalException;
 import com.stripe.stripeterminal.log.LogLevel;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
+
+import de.butler_kassensysteme.twa.Message.CaptureStripePaymentIntentMessage;
+import de.butler_kassensysteme.twa.Message.Message;
 
 public class LauncherActivity extends com.google.androidbrowserhelper.trusted.LauncherActivity {
     private CustomTabsClient mClient = null;
@@ -100,7 +98,7 @@ public class LauncherActivity extends com.google.androidbrowserhelper.trusted.La
 
             if (id != null) {
                 // Notify your backend to capture the PaymentIntent
-                postMessage(new PostMessageObject("capturePaymentIntent", id), null);
+                postMessage(new CaptureStripePaymentIntentMessage(id), null);
             } else {
                 // TODO
                 System.out.println("Payment collected offline");
@@ -176,7 +174,7 @@ public class LauncherActivity extends com.google.androidbrowserhelper.trusted.La
         return super.getLaunchingUrl();
     }
 
-    public static void postMessage(PostMessageObject data, @Nullable CompletableFuture<String> future) {
+    public static void postMessage(Message data, @Nullable CompletableFuture<String> future) {
         if (mSession == null) return;
 
         if (future != null) {
