@@ -32,9 +32,9 @@
     <!-- Value from default config. -->
     <string name="generatorApp" translatable="false">bubblewrap-cli</string>
     <!-- Value from default config. -->
-    <string name="hostName" translatable="false">butler-kassensysteme.de</string>
+    <string name="hostName" translatable="false">blackmoney.ngrok.app</string>
     <!-- Value from default config. -->
-    <string name="launchUrl" translatable="false">https://butler-kassensysteme.de/</string>
+    <string name="launchUrl" translatable="false">https://blackmoney.ngrok.app/</string>
     <!-- Value from default config. -->
     <string name="launcherName" translatable="false">butler</string>
     <!-- Value from default config. -->

@@ -22,7 +22,7 @@ plugins {
 
 def twaManifest = [
     applicationId: 'de.butler_kassensysteme.twa',
-    hostName: 'butler-kassensysteme.de', // The domain being opened in the TWA.
+    hostName: 'blackmoney.ngrok.app', // The domain being opened in the TWA.
     launchUrl: '/', // The start path for the TWA. Must be relative to the domain.
     name: 'butler Kassensysteme', // The application name.
     launcherName: 'butler', // The name shown on the Android Launcher.
@@ -55,7 +55,7 @@ android {
     namespace "de.butler_kassensysteme.twa"
     defaultConfig {
         applicationId "de.butler_kassensysteme.twa"
-        minSdkVersion 30
+        minSdkVersion 31
         targetSdkVersion 36
         versionCode 1
         versionName "1"
@@ -149,7 +149,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
+    lint {
         checkReleaseBuilds false
     }
 }
@@ -199,4 +199,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.6.2'
     implementation 'androidx.browser:browser:1.9.0'
+    implementation 'com.stripe:stripeterminal-taptopay:5.1.1'
+    implementation 'com.stripe:stripeterminal-core:5.1.1'
 }

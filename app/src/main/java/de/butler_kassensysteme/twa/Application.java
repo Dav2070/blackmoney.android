@@ -15,9 +15,18 @@
  */
 package de.butler_kassensysteme.twa;
 
+import com.stripe.stripeterminal.TerminalApplicationDelegate;
+import com.stripe.stripeterminal.taptopay.TapToPay;
+
 public class Application extends android.app.Application {
   @Override
   public void onCreate() {
       super.onCreate();
+
+      // Skip initialization if running in the TTPA process.
+      if (TapToPay.isInTapToPayProcess()) return;
+
+      // For example, this will be skipped.
+      TerminalApplicationDelegate.onCreate(this);
   }
 }

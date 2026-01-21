@@ -25,7 +25,6 @@
 
     <application
         android:name="Application"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:manageSpaceActivity="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity"
@@ -36,26 +35,26 @@
             android:name="asset_statements"
             android:resource="@string/assetStatements" />
 
-            <meta-data
-                android:name="web_manifest_url"
-                android:value="@string/webManifestUrl" />
+        <meta-data
+            android:name="web_manifest_url"
+            android:value="@string/webManifestUrl" />
 
         <meta-data
             android:name="twa_generator"
             android:value="@string/generatorApp" />
 
-            <activity android:name="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity"
-                android:exported="false"
-                android:enabled="true"
-                android:excludeFromRecents="true">
-                <meta-data
-                    android:name="android.support.customtabs.trusted.MANAGE_SPACE_URL"
-                    android:value="@string/launchUrl" />
-                <intent-filter>
-                    <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                </intent-filter>
-            </activity>
+        <activity android:name="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity"
+            android:exported="false"
+            android:enabled="true"
+            android:excludeFromRecents="true">
+            <meta-data
+                android:name="android.support.customtabs.trusted.MANAGE_SPACE_URL"
+                android:value="@string/launchUrl" />
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity android:name="LauncherActivity"
             android:alwaysRetainTaskState="true"
@@ -125,6 +124,8 @@
 
         <activity android:name="com.google.androidbrowserhelper.trusted.WebViewFallbackActivity"
             android:configChanges="orientation|screenSize" />
+
+        <activity android:name=".PermissionRequestActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
