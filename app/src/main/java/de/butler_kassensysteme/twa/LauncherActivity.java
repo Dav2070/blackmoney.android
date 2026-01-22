@@ -70,6 +70,7 @@ public class LauncherActivity extends com.google.androidbrowserhelper.trusted.La
     private final String TAG = "butler";
     static Map<String, CompletableFuture<String>> postMessageResolvers = new HashMap<>();
     AtomicReference<Reader> readerReference = new AtomicReference<>();
+    public long currentPaymentPrice = 0;
 
     private final PaymentIntentCallback createPaymentIntentCallback = new PaymentIntentCallback() {
         @Override
@@ -118,7 +119,7 @@ public class LauncherActivity extends com.google.androidbrowserhelper.trusted.La
             Log.d(TAG, "Success in ReaderCallback");
 
             Terminal.getInstance().createPaymentIntent(
-                    new PaymentIntentParameters.Builder().setAmount(100L).setCurrency("eur").build(),
+                    new PaymentIntentParameters.Builder().setAmount(currentPaymentPrice).setCurrency("eur").build(),
                     createPaymentIntentCallback
             );
         }
@@ -204,24 +205,39 @@ public class LauncherActivity extends com.google.androidbrowserhelper.trusted.La
                                     // Initialize the Terminal as soon as possible
                                     try {
                                         Terminal.init(
-                                                getApplicationContext(), LogLevel.VERBOSE, new TokenProvider(),
-                                                new TerminalEventListener(), null);
+                                                getApplicationContext(),
+                                                LogLevel.VERBOSE,
+                                                new TokenProvider(),
+                                                new TerminalEventListener(),
+                                                null
+                                        );
                                     } catch (TerminalException e) {
                                         throw new RuntimeException("Location services are required to initialize the Terminal.", e);
                                     }
                                 }
 
-                                DiscoveryConfiguration.TapToPayDiscoveryConfiguration config = new DiscoveryConfiguration.TapToPayDiscoveryConfiguration(true);
+                                Reader reader = readerReference.get();
+                                currentPaymentPrice = json.getLong("price");
 
-                                Terminal.getInstance().discoverReaders(
-                                        config,
-                                        readers -> {
-                                            if (!readers.isEmpty()) {
-                                                readerReference.set(readers.get(0));
-                                            }
-                                        },
-                                        discoverReadersCallback
-                                );
+                                if (reader == null) {
+                                    // Find the tap to pay reader
+                                    Terminal.getInstance().discoverReaders(
+                                            new DiscoveryConfiguration.TapToPayDiscoveryConfiguration(false),
+                                            readers -> {
+                                                if (!readers.isEmpty()) {
+                                                    readerReference.set(readers.get(0));
+                                                }
+                                            },
+                                            discoverReadersCallback
+                                    );
+                                } else {
+                                    // Start the payment directly using the currently connected tap to pay reader
+                                    Terminal.getInstance().createPaymentIntent(
+                                            new PaymentIntentParameters.Builder().setAmount(currentPaymentPrice).setCurrency("eur").build(),
+                                            createPaymentIntentCallback
+                                    );
+                                }
+
                                 break;
                             default:
                                 CompletableFuture<String> resolver = postMessageResolvers.get(type);
